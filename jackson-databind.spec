@@ -3,11 +3,12 @@
 %{?java_common_find_provides_and_requires}
 Name:          %{?scl_prefix}jackson-databind
 Version:       2.5.0
-Release:       2.3%{?dist}
+Release:       2.4%{?dist}
 Summary:       General data-binding package for Jackson (2.x)
 License:       ASL 2.0 and LGPLv2+
 URL:           http://wiki.fasterxml.com/JacksonHome
 Source0:       https://github.com/FasterXML/jackson-databind/archive/%{pkg_name}-%{version}.tar.gz
+Patch0: CVE-2017-7525.patch
 BuildRequires: %{?scl_prefix}mvn(com.fasterxml.jackson.core:jackson-annotations) >= 2.4.1
 BuildRequires: %{?scl_prefix}mvn(com.fasterxml.jackson.core:jackson-core) >= 2.4.1
 # test deps
@@ -35,6 +36,7 @@ This package contains javadoc for %{pkg_name}.
 
 %{?scl:scl enable %{scl_maven} %{scl} - << "EOF"}
 %setup -q -n %{pkg_name}-%{pkg_name}-%{version}
+%patch0 -p1
 
 cp -p src/main/resources/META-INF/LICENSE .
 cp -p src/main/resources/META-INF/NOTICE .
@@ -139,6 +141,9 @@ cp ${file} ${file%.in}
 %doc LICENSE NOTICE
 
 %changelog
+* Fri Jul 21 2017 Mat Booth <mat.booth@redhat.com> - 2.5.0-2.4
+- Backport a patch to fix CVE-2017-7525
+
 * Thu Jul 30 2015 Roland Grunberg <rgrunber@redhat.com> - 2.5.0-2.3
 - Add missing osgi.versionpolicy property.
 
